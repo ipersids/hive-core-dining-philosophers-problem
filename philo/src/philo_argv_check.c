@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 17:15:54 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/11 20:07:42 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:32:45 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
-static int			get_number(const char *arg, t_error_code *err_code);
+static int			get_number(const char *arg, t_err *err_code, int *res);
 static short int	is_number(const char *arg);
 static long int		ft_atol(const char *str);
 
@@ -34,19 +34,20 @@ static long int		ft_atol(const char *str);
  */
 void	philo_argv_check(const int argc, char** argv, t_philo *philo)
 {
-	t_error_code	err_check;
-
 	if (5 > argc || 6 < argc)
-		philo_exit(ERROR_ARG_AMOUNT, NULL, NULL);
-	err_check = MAX_ERROR_CODE;
-	philo->input.tread_amount = get_number(argv[1], &err_check);
-	philo->input.die = get_number(argv[2], &err_check);
-	philo->input.eat = get_number(argv[3], &err_check);
-	philo->input.sleep = get_number(argv[4], &err_check);
+		philo_exit(ERROR_ARG_AMOUNT);
+	if (get_number(argv[1], &philo->err, &philo->info.tread_amount))
+		philo_exit(philo->err);
+	if (get_number(argv[2], &philo->err, &philo->info.die))
+		philo_exit(philo->err);
+	if (get_number(argv[3], &philo->err, &philo->info.eat))
+		philo_exit(philo->err);
+	if (get_number(argv[4], &philo->err, &philo->info.sleep))
+		philo_exit(philo->err);
 	if (6 == argc)
-		philo->input.meals_amount = get_number(argv[5], &err_check);
-	if (MAX_ERROR_CODE != err_check)
-		philo_exit(err_check, NULL, NULL);
+		get_number(argv[5], &philo->err, &philo->info.meals_amount);
+	if (NO_ERROR != philo->err)
+		philo_exit(philo->err);
 }
 
 /* ------------------- Private Function Implementation --------------------- */
@@ -58,7 +59,7 @@ void	philo_argv_check(const int argc, char** argv, t_philo *philo)
  * @param err_code Pointer to an error code variable to set in case of error.
  * @return The converted integer value, or INT_MIN in case of error.
  */
-static int			get_number(const char *arg, t_error_code *err_code)
+static int			get_number(const char *arg, t_err *err_code, int *res)
 {
 	long int	num;
 
@@ -66,15 +67,21 @@ static int			get_number(const char *arg, t_error_code *err_code)
 	if (!is_number(arg))
 	{
 		*err_code = ERROR_ARG_ISNOT_NUMBER;
-		return (INT_MIN);
+		return (EXIT_FAILURE);
 	}
 	num = ft_atol(arg);
-	if (!(0 < num && INT_MAX >= num))
+	if (0 >= num)
+	{
+		*err_code = ERROR_ARG_NEGATIVE_INT;
+		return (EXIT_FAILURE);
+	}
+	if (INT_MAX < num)
 	{
 		*err_code = ERROR_ARG_INVALID_INT;
-		return (INT_MIN);
+		return (EXIT_FAILURE);
 	}
-	return ((int)num);
+	*res = (int)num;
+	return (EXIT_SUCCESS);
 }
 
 /**

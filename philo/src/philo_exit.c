@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:03:37 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/11 20:03:58 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:34:06 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,18 @@ static const char	*get_error_message(int exit_code);
  * 				  a void* parameter.
  * @param param A parameter to pass to the cleanup function.
  */
-void	philo_exit(int exit_code, void (*destroy)(t_philo *), t_philo *param)
+void	philo_exit(int exit_code)
 {
 	const char	*msg;
 	int			len;
 
-	if (destroy && param)
-		destroy(param);
-	if (EXIT_SUCCESS == exit_code)
+	if (NO_ERROR == exit_code)
 		exit(EXIT_SUCCESS);
 	msg = get_error_message(exit_code);
 	len = 0;
 	while ('\0' != msg[len])
 		len++;
-	write(2, msg, len);
+	write(STDERR_FILENO, msg, len);
 	exit(EXIT_FAILURE);
 }
 
@@ -56,10 +54,11 @@ void	philo_exit(int exit_code, void (*destroy)(t_philo *), t_philo *param)
 static const char	*get_error_message(int exit_code)
 {
 	static const char	list[MAX_ERROR_CODE][100] = {
-		"Error\n",
+		"Success\n",
 		"Error: wrong amount of arguments (should be 5 or 6)\n",
 		"Error: invalid argument (check forbidden characters)\n",
-		"Error: invalid argument (should be an integer more then 0)\n"
+		"Error: invalid argument (should be a positive integer more then 0)\n",
+		"Error: invalid argument (should be an integer no more then INT_MAX)\n"
 	};
 
 	return (list[exit_code]);
