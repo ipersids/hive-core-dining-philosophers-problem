@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 17:15:54 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/20 13:32:45 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/21 01:22:41 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,25 @@ static long int		ft_atol(const char *str);
  * @param argv The array of command-line arguments.
  * @param philo Pointer to the philosopher structure to initialize.
  */
-void	philo_argv_check(const int argc, char** argv, t_philo *philo)
+void	philo_argv_check(const int argc, char **argv, t_philo *philo)
 {
+	t_err	err;
+
+	err = 0;
 	if (5 > argc || 6 < argc)
 		philo_exit(ERROR_ARG_AMOUNT);
-	if (get_number(argv[1], &philo->err, &philo->info.tread_amount))
-		philo_exit(philo->err);
-	if (get_number(argv[2], &philo->err, &philo->info.die))
-		philo_exit(philo->err);
-	if (get_number(argv[3], &philo->err, &philo->info.eat))
-		philo_exit(philo->err);
-	if (get_number(argv[4], &philo->err, &philo->info.sleep))
-		philo_exit(philo->err);
+	if (get_number(argv[1], &err, &philo->info.forks))
+		philo_exit(err);
+	if (get_number(argv[2], &err, &philo->info.die))
+		philo_exit(err);
+	if (get_number(argv[3], &err, &philo->info.eat))
+		philo_exit(err);
+	if (get_number(argv[4], &err, &philo->info.sleep))
+		philo_exit(err);
 	if (6 == argc)
-		get_number(argv[5], &philo->err, &philo->info.meals_amount);
-	if (NO_ERROR != philo->err)
-		philo_exit(philo->err);
+		get_number(argv[5], &err, &philo->info.meals);
+	if (NO_ERROR != err)
+		philo_exit(err);
 }
 
 /* ------------------- Private Function Implementation --------------------- */
@@ -59,7 +62,7 @@ void	philo_argv_check(const int argc, char** argv, t_philo *philo)
  * @param err_code Pointer to an error code variable to set in case of error.
  * @return The converted integer value, or INT_MIN in case of error.
  */
-static int			get_number(const char *arg, t_err *err_code, int *res)
+static int	get_number(const char *arg, t_err *err_code, int *res)
 {
 	long int	num;
 

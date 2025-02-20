@@ -23,7 +23,9 @@ OBJ_DIR			:= obj
 SRCS			:= $(SRC_DIR)/philo_argv_check.c \
 				   $(SRC_DIR)/philo_destroy.c \
 				   $(SRC_DIR)/philo_exit.c \
-				   $(SRC_DIR)/philo_struct_init.c
+				   $(SRC_DIR)/philo_struct_init.c \
+				   $(SRC_DIR)/philo_pthread_create.c \
+				   $(SRC_DIR)/philo_routine.c
 
 SRC_MAIN		:= main.c
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
