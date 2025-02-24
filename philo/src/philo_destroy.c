@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:52:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/21 01:23:34 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/24 00:49:31 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	philo_destroy(int exit_code, t_philo *philo)
 	if (philo->mut_thread)
 	{
 		philo_mutex_destroy(philo->mut_thread, philo->info.forks);
-		pthread_mutex_destroy(&philo->mut_helper);
+		pthread_mutex_destroy(&philo->mut_status);
+		pthread_mutex_destroy(&philo->mut_print);
 	}
 	philo_exit(exit_code);
 }

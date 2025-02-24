@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:03:37 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/20 19:43:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/21 22:12:41 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,15 @@ void	philo_exit(int exit_code)
 static const char	*get_error_message(int exit_code)
 {
 	static const char	list[MAX_ERROR_CODE][100] = {
-		"Success\n",
+		"",
 		"Error: wrong amount of arguments (should be 5 or 6)\n",
 		"Error: invalid argument (check forbidden characters)\n",
 		"Error: invalid argument (should be a positive integer more then 0)\n",
 		"Error: invalid argument (should be an integer no more then INT_MAX)\n",
 		"Error: malloc fails\n",
 		"Error: pthread fails\n",
-		"Error: mutex fails\n"
+		"Error: mutex fails\n",
+		"Error: gettimeofday fails\n"
 	};
 
 	return (list[exit_code]);
