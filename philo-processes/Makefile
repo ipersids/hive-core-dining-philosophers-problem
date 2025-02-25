@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/25 16:04:25 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/25 18:22:37 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/26 00:11:19 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,9 @@ TMP_DIR			:= tmp
 # Sources and objects
 SRCS			:=	$(SRC_DIR)/argv_check.c \
 					$(SRC_DIR)/destructors.c \
-					$(SRC_DIR)/simulation_setup.c
+					$(SRC_DIR)/simulation_setup.c \
+					$(SRC_DIR)/simulation_utils.c \
+					$(SRC_DIR)/simulation_routine.c
 
 SRC_MAIN		:= main.c
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

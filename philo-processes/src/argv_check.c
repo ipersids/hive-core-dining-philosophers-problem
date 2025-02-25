@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:54:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 21:40:52 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 23:07:02 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,13 @@ void	philo_struct_init(t_philo *philo)
 	memset(&philo->info, 0, sizeof(t_time_to));
 	philo->sem_lock = SEM_FAILED;
 	philo->sem_fork = SEM_FAILED;
+	philo->sem_error = SEM_FAILED;
 	philo->start_ms = 0;
 	philo->processes = NULL;
 	philo->indx = 0;
+	philo->meals_eaten = 0;
+	philo->last_meal_ms = 0;
+	philo->status = 0;
 }
 
 void	philo_argv_check(const int argc, char **argv, t_philo *philo)

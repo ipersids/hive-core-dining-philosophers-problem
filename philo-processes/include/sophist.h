@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:31:04 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 21:40:20 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 01:06:46 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,24 @@
 
 # define SEM_LOCK_NAME "./tmp/sem_lock"
 # define SEM_FORK_NAME "./tmp/sem_fork"
+# define SEM_ERROR_NAME "./tmp/sem_error"
 # define SEM_MODE 0666
+
+# ifndef TRUE
+#  define TRUE 1
+# endif
+
+# ifndef FALSE
+#  define FALSE 0
+# endif
+
+# define STATUS_EXIT 42
+
+typedef enum e_routine_type
+{
+	GO_EAT = 12,
+	GO_THINK
+}	t_routine_type;
 
 typedef enum e_err
 {
@@ -47,8 +64,23 @@ typedef enum e_err
 	ERROR_WAITPID,
 	MAX_ERROR_CODE,
 	ERROR_PHILO_DEAD = 254,
-	ERROR_PHILO_SIGNALED
 }	t_err;
+
+typedef enum e_time_type
+{
+	TIME_USEC,
+	TIME_MSEC,
+	TIME_SEC
+}	t_time_type;
+
+typedef enum e_msg_type
+{
+	MSG_THINK,
+	MSG_SLEEP,
+	MSG_EAT,
+	MSG_FORK,
+	MSG_DEAD
+}	t_msg_type;
 
 /* ---------------------------- Data Structures ----------------------------- */
 
@@ -66,9 +98,13 @@ typedef struct s_philo
 	t_time_to		info;
 	unsigned int	indx;
 	sem_t			*sem_lock;
+	sem_t			*sem_error;
 	sem_t			*sem_fork;
 	pid_t			*processes;
 	int64_t			start_ms;
+	int64_t			last_meal_ms;
+	short int		status;
+	unsigned int	meals_eaten;
 }					t_philo;
 
 /* --------------------------- src/argv_check.c ----------------------------- */
@@ -109,6 +145,20 @@ void	philo_kill(t_philo *philo);
 
 void	philo_semaphore_init(t_philo *philo);
 void	philo_fork_init(t_philo *philo);
+void	philo_start_dinner(t_philo *philo);
 void	philo_wait_everyone(t_philo *philo);
+
+/* ------------------------ src/simulation_utils.c -------------------------- */
+
+int64_t	philo_get_time(t_time_type type, t_philo *philo);
+void	philo_usleep(int64_t sleep_microsec, t_philo *philo);
+int		philo_is_alive_check(t_philo *philo);
+void	philo_print_message(t_msg_type type, t_philo *philo);
+
+/* ----------------------- src/simulation_routine.c ------------------------- */
+
+void	philo_think(t_philo *philo);
+void	philo_eat(t_philo *philo);
+void	philo_sleep(t_philo *philo);
 
 #endif
