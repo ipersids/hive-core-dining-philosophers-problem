@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:47:50 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 16:49:48 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:40:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,9 @@ int	main(int argc, char **argv)
 
 	philo_struct_init(&philo);
 	philo_argv_check(argc, argv, &philo);
+	philo_semaphore_init(&philo);
+	philo_fork_init(&philo);
+	// philo_start_dinner(&philo);
+	philo_wait_everyone(&philo);
 	return (EXIT_SUCCESS);
 }

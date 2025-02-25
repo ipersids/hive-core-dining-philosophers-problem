@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:54:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 16:54:27 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:40:52 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * @param err_code Pointer to an error code variable to set in case of error.
  * @return The converted integer value, or INT_MIN in case of error.
  */
-static size_t		get_number(const char *arg, t_err *err_code);
+static unsigned int		get_number(const char *arg, t_err *err_code);
 
 /**
  * @brief Checks if a string represents a valid number.
@@ -30,7 +30,7 @@ static size_t		get_number(const char *arg, t_err *err_code);
  * @param arg The string to check.
  * @return 1 if the string is a valid number, 0 otherwise.
  */
-static short int	is_number(const char *arg);
+static short int		is_number(const char *arg);
 
 /**
  * @brief Converts a string to a long integer.
@@ -38,14 +38,18 @@ static short int	is_number(const char *arg);
  * @param str The string to convert.
  * @return The converted long integer value.
  */
-static long int		ft_atol(const char *str);
+static long int			ft_atol(const char *str);
 
 /* --------------------------- Public Functions ---------------------------- */
 
 void	philo_struct_init(t_philo *philo)
 {
 	memset(&philo->info, 0, sizeof(t_time_to));
+	philo->sem_lock = SEM_FAILED;
+	philo->sem_fork = SEM_FAILED;
 	philo->start_ms = 0;
+	philo->processes = NULL;
+	philo->indx = 0;
 }
 
 void	philo_argv_check(const int argc, char **argv, t_philo *philo)
@@ -75,7 +79,7 @@ void	philo_argv_check(const int argc, char **argv, t_philo *philo)
 
 /* ------------------- Private Function Implementation --------------------- */
 
-static size_t	get_number(const char *arg, t_err *err_code)
+static unsigned int	get_number(const char *arg, t_err *err_code)
 {
 	long int	num;
 

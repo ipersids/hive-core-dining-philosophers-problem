@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/25 16:04:25 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/25 16:56:43 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/25 18:22:37 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,12 @@ HDRS			:= -Iinclude
 # Directories
 SRC_DIR			:= src
 OBJ_DIR			:= obj
+TMP_DIR			:= tmp
 
 # Sources and objects
 SRCS			:=	$(SRC_DIR)/argv_check.c \
-					$(SRC_DIR)/destructors.c
+					$(SRC_DIR)/destructors.c \
+					$(SRC_DIR)/simulation_setup.c
 
 SRC_MAIN		:= main.c
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -48,6 +50,7 @@ $(NAME): $(OBJS) $(OBJ_MAIN)
 # Rule to build object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(TMP_DIR)
 	$(CC) $(CFLAGS) $(HDRS) -c $< -o $@
 
 $(OBJ_DIR)/main.o: $(SRC_MAIN)
@@ -56,16 +59,11 @@ $(OBJ_DIR)/main.o: $(SRC_MAIN)
 
 clean:
 	$(RM_DIR) $(OBJ_DIR)
+	$(RM_DIR) $(TMP_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
 
-debug:
-	@echo "SRCS: $(SRCS)"
-	@echo "OBJS: $(OBJS)"
-	@echo "SRC_MAIN: $(SRC_MAIN)"
-	@echo "OBJ_MAIN: $(OBJ_MAIN)"
-
-.PHONY: all clean fclean re debug
+.PHONY: all clean fclean re

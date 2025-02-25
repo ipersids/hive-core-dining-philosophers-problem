@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:54:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 16:55:42 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:39:03 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,26 @@ static const char	*get_error_message(int exit_code);
 
 /* --------------------------- Public Functions ---------------------------- */
 
+void	philo_exit_destroy(int exit_code, t_philo *philo)
+{
+	if (SEM_FAILED != philo->sem_lock)
+	{
+		sem_unlink(SEM_LOCK_NAME);
+		sem_close(philo->sem_lock);
+	}
+	if (SEM_FAILED != philo->sem_fork)
+	{
+		sem_unlink(SEM_FORK_NAME);
+		sem_close(philo->sem_fork);
+	}
+	if (philo->processes)
+	{
+		philo_kill(philo);
+		free(philo->processes);
+	}
+	philo_exit(exit_code);
+}
+
 void	philo_exit(int exit_code)
 {
 	const char	*msg;
@@ -39,6 +59,27 @@ void	philo_exit(int exit_code)
 	exit(EXIT_FAILURE);
 }
 
+void	philo_kill(t_philo *philo)
+{
+	unsigned int	i;
+	pid_t			*forks;
+
+	i = 0;
+	if (!philo || !philo->processes)
+		return ;
+	forks = philo->processes;
+	while (i < philo->info.forks)
+	{
+		if (0 == kill(forks[i], 0))
+		{
+			printf("I,m killing %d\n", forks[i]); /// testing
+			kill(forks[i], SIGTERM);
+		}
+		forks[i] = -1;
+		i++;
+	}
+}
+
 /* ------------------- Private Function Implementation --------------------- */
 
 static const char	*get_error_message(int exit_code)
@@ -50,7 +91,10 @@ static const char	*get_error_message(int exit_code)
 		"Error: invalid argument (should be a positive integer more then 0)\n",
 		"Error: invalid argument (should be an integer no more then INT_MAX)\n",
 		"Error: malloc fails\n",
-		"Error: gettimeofday fails\n"
+		"Error: gettimeofday fails\n",
+		"Error: fork fails\n",
+		"Error: semaphore fails\n",
+		"Error: waitpid fails\n"
 	};
 
 	return (list[exit_code]);
