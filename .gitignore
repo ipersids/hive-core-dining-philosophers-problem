@@ -36,6 +36,7 @@
 *.x86_64
 *.hex
 philo/philo
+philo-processes/philo_bonus
 
 
 # Debug files
