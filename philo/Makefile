@@ -54,10 +54,4 @@ fclean: clean
 
 re: fclean all
 
-debug:
-	@echo "SRCS: $(SRCS)"
-	@echo "OBJS: $(OBJS)"
-	@echo "SRC_MAIN: $(SRC_MAIN)"
-	@echo "OBJ_MAIN: $(OBJ_MAIN)"
-
-.PHONY: all clean fclean re debug
+.PHONY: all clean fclean re

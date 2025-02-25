@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:31:04 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 16:56:14 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 21:40:20 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,18 @@
 # include <sys/types.h> // fork() and waitpid() dependencies
 # include <sys/time.h>	// gettimeofday()
 # include <string.h>	// memset()
+# include <fcntl.h>		// For O_* constants in sem_open()
+// # include <sys/stat.h>	// For mode constants in sem_open()
 # include <semaphore.h> // sem_open, sem_close, sem_post, sem_wait, sem_unlink
-
-// # include <signal.h>    // kill()
-// # include <pthread.h>   // pthread_create, pthread_detach, pthread_join
+# include <signal.h>    // kill()
+# include <sys/wait.h>	// waitpid() dependencies
+# include <errno.h>		// for waitpid()
 
 /* ------------------------------- Constants -------------------------------- */
+
+# define SEM_LOCK_NAME "./tmp/sem_lock"
+# define SEM_FORK_NAME "./tmp/sem_fork"
+# define SEM_MODE 0666
 
 typedef enum e_err
 {
@@ -36,28 +42,36 @@ typedef enum e_err
 	ERROR_ARG_INVALID_INT,
 	ERROR_MALLOC,
 	ERROR_GETTIMEOFDAY,
-	MAX_ERROR_CODE
+	ERROR_FORK,
+	ERROR_SEMAPHORE,
+	ERROR_WAITPID,
+	MAX_ERROR_CODE,
+	ERROR_PHILO_DEAD = 254,
+	ERROR_PHILO_SIGNALED
 }	t_err;
 
 /* ---------------------------- Data Structures ----------------------------- */
 
 typedef struct s_time_to
 {
-	size_t	forks;
-	size_t	meals;
-	size_t	indx;
-	int64_t	die_ms;
-	int64_t	eat_ms;
-	int64_t	sleep_ms;
+	unsigned int	forks;
+	unsigned int	meals;
+	int64_t			die_ms;
+	int64_t			eat_ms;
+	int64_t			sleep_ms;
 }	t_time_to;
 
 typedef struct s_philo
 {
 	t_time_to		info;
+	unsigned int	indx;
+	sem_t			*sem_lock;
+	sem_t			*sem_fork;
+	pid_t			*processes;
 	int64_t			start_ms;
 }					t_philo;
 
-/* ------------------------ philo/src/argv_check.c -------------------------- */
+/* --------------------------- src/argv_check.c ----------------------------- */
 
 /**
  * @brief Checks the command-line arguments and initializes the philo structure.
@@ -79,7 +93,7 @@ void	philo_argv_check(const int argc, char **argv, t_philo *philo);
  */
 void	philo_struct_init(t_philo *philo);
 
-/* ----------------------- philo/src/destructors.c -------------------------- */
+/* -------------------------- src/destructors.c ----------------------------- */
 
 /**
  * @brief Causes program termination and prints message in error case.
@@ -87,5 +101,14 @@ void	philo_struct_init(t_philo *philo);
  * @param exit_code The exit status code.
  */
 void	philo_exit(int exit_code);
+
+void	philo_exit_destroy(int exit_code, t_philo *philo);
+void	philo_kill(t_philo *philo);
+
+/* ------------------------ src/simulation_setup.c -------------------------- */
+
+void	philo_semaphore_init(t_philo *philo);
+void	philo_fork_init(t_philo *philo);
+void	philo_wait_everyone(t_philo *philo);
 
 #endif
