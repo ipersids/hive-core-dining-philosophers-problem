@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 13:53:40 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 02:36:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:11:51 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
-static int	trylock(size_t i, t_philo *philo, t_whoami *whoami);
+static int	trylock(size_t i, int delay, t_philo *philo, t_whoami *whoami);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -30,9 +30,9 @@ int	philo_routine_go_think(t_philo *philo, t_whoami *whoami)
 
 int	philo_routine_go_take_fork(t_philo *philo, t_whoami *whoami)
 {
-	if (EXIT_FAILURE == trylock(whoami->left_i, philo, whoami))
+	if (EXIT_FAILURE == trylock(whoami->left_i, TIME_DELAY, philo, whoami))
 		return (EXIT_FAILURE);
-	if (EXIT_FAILURE == trylock(whoami->right_i, philo, whoami))
+	if (EXIT_FAILURE == trylock(whoami->right_i, TIME_DELAY, philo, whoami))
 	{
 		pthread_mutex_unlock(&philo->thread_lock[whoami->left_i]);
 		return (EXIT_FAILURE);
@@ -90,13 +90,11 @@ int	philo_routine_go_sleep(t_philo *philo, t_whoami *whoami)
 
 /* ------------------- Private Function Implementation --------------------- */
 
-static int	trylock(size_t i, t_philo *philo, t_whoami *whoami)
+static int	trylock(size_t i, int delay, t_philo *philo, t_whoami *whoami)
 {
 	int	counter;
-	int	delay;
 
 	counter = 0;
-	delay = 100;
 	while (TRUE)
 	{
 		pthread_mutex_lock(&philo->try_lock);

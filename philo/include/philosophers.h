@@ -6,14 +6,17 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:04:08 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 02:47:11 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:12:51 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note small things to do
- * 1) Improve synchronisation to stabilize odd-cases output
- * 2) Double check data race protection
+ * 1) Double check data race protection
+ * 
+ * @note test cases 
+ * ./philo 5 500 200 200 (one died)
+ * 
  */
 
 #ifndef PHILOSOPHERS_H
@@ -75,6 +78,7 @@ typedef enum e_time_type
 
 # define IS_BUSY 1
 # define IS_FREE 0
+# define TIME_DELAY 100
 
 /* ---------------------------- Data Structures ---------------------------- */
 
