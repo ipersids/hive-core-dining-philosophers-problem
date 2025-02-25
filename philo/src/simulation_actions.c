@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_routine_actions.c                            :+:      :+:    :+:   */
+/*   simulation_actions.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 13:53:40 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 14:11:51 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:35:29 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
+/**
+ * @brief Attempts to lock a mutex with a delay.
+ * 
+ * @param i Index of the mutex to lock.
+ * @param delay Delay between attempts to lock the mutex.
+ * @param philo Pointer to the philosopher structure.
+ * @param whoami Pointer to the whoami structure.
+ * @return EXIT_SUCCESS if the mutex is locked, EXIT_FAILURE otherwise.
+ */
 static int	trylock(size_t i, int delay, t_philo *philo, t_whoami *whoami);
 
 /* --------------------------- Public Functions ---------------------------- */

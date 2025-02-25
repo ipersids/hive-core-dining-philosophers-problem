@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_pthread_create.c                             :+:      :+:    :+:   */
+/*   simulation_setup.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:54:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/24 18:29:59 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:23:22 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,25 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
+/**
+ * @brief Initializes the mutexes for the threads.
+ * 
+ * @param philo Pointer to the philosopher structure.
+ */
 static void	mutex_init(t_philo *philo);
+
+/**
+ * @brief Initializes helper mutexes for the simulation management.
+ * 
+ * @param philo Pointer to the philosopher structure.
+ */
 static void	mutex_helpers_init(t_philo *philo);
+
+/**
+ * @brief Initializes the threads.
+ * 
+ * @param philo Pointer to the philosopher structure.
+ */
 static void	thread_init(t_philo *philo);
 
 /* --------------------------- Public Functions ---------------------------- */

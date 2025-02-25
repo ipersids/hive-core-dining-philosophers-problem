@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_routine_start.c                              :+:      :+:    :+:   */
+/*   simulation_start.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 01:12:59 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 14:43:23 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:28:35 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,20 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
+/**
+ * @brief Initializes the whoami structure for the philosopher.
+ * 
+ * @param philo Pointer to the philosopher structure.
+ * @param whoami Pointer to the whoami structure.
+ */
 static void	whoami_init(t_philo *philo, t_whoami *whoami);
+
+/**
+ * @brief Ends the dinner if the amount of meals for dinner is specified 
+ *        and prints a message.
+ * 
+ * @param philo Pointer to the philosopher structure.
+ */
 static void	dinner_end(t_philo *philo);
 
 /* --------------------------- Public Functions ---------------------------- */

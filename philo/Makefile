@@ -20,16 +20,12 @@ SRC_DIR			:= src
 OBJ_DIR			:= obj
 
 # Sources and objects
-SRCS			:= $(SRC_DIR)/philo_argv_check.c \
-				   $(SRC_DIR)/philo_destroy.c \
-				   $(SRC_DIR)/philo_exit.c \
-				   $(SRC_DIR)/philo_struct_init.c \
-				   $(SRC_DIR)/philo_pthread_create.c \
-				   $(SRC_DIR)/philo_routine_start.c \
-				   $(SRC_DIR)/philo_routine_actions.c \
-				   $(SRC_DIR)/philo_routine_check.c \
-				   $(SRC_DIR)/philo_time_manager.c \
-				   $(SRC_DIR)/philo_print_message.c
+SRCS			:=	$(SRC_DIR)/argv_check.c \
+					$(SRC_DIR)/destructors.c \
+					$(SRC_DIR)/simulation_actions.c \
+					$(SRC_DIR)/simulation_setup.c \
+					$(SRC_DIR)/simulation_start.c \
+					$(SRC_DIR)/simulation_utils.c
 
 SRC_MAIN		:= main.c
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

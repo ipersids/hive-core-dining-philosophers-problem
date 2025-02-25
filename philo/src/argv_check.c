@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_argv_check.c                                 :+:      :+:    :+:   */
+/*   argv_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 17:15:54 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/24 15:49:50 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:19:18 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,47 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
+/**
+ * @brief Converts a string argument to an integer and checks for errors.
+ * 
+ * @param arg The string argument to convert.
+ * @param err_code Pointer to an error code variable to set in case of error.
+ * @return The converted integer value, or INT_MIN in case of error.
+ */
 static size_t		get_number(const char *arg, t_err *err_code);
+
+/**
+ * @brief Checks if a string represents a valid number.
+ * 
+ * @param arg The string to check.
+ * @return 1 if the string is a valid number, 0 otherwise.
+ */
 static short int	is_number(const char *arg);
+
+/**
+ * @brief Converts a string to a long integer.
+ * 
+ * @param str The string to convert.
+ * @return The converted long integer value.
+ */
 static long int		ft_atol(const char *str);
 
 /* --------------------------- Public Functions ---------------------------- */
 
-/**
- * @brief Checks the command-line arguments and initializes the philo structure.
- * 
- * This function checks the number of arguments and converts them to integers,
- * storing them in the provided philosopher structure. 
- * If any errors are detected, the function calls philo_exit.
- * 
- * @param argc The number of command-line arguments.
- * @param argv The array of command-line arguments.
- * @param philo Pointer to the philosopher structure to initialize.
- */
+void	philo_struct_init(t_philo *philo)
+{
+	memset(&philo->info, 0, sizeof(t_time_to));
+	memset(&philo->status_lock, 0, sizeof(pthread_mutex_t));
+	memset(&philo->print_lock, 0, sizeof(pthread_mutex_t));
+	memset(&philo->try_lock, 0, sizeof(pthread_mutex_t));
+	philo->thread_lock = NULL;
+	philo->thread = NULL;
+	philo->thread_bool = NULL;
+	philo->status = STATUS_WAIT;
+	philo->err_code = NO_ERROR;
+	philo->start_ms = 0;
+}
+
 void	philo_argv_check(const int argc, char **argv, t_philo *philo)
 {
 	t_err	err;
@@ -59,13 +83,6 @@ void	philo_argv_check(const int argc, char **argv, t_philo *philo)
 
 /* ------------------- Private Function Implementation --------------------- */
 
-/**
- * @brief Converts a string argument to an integer and checks for errors.
- * 
- * @param arg The string argument to convert.
- * @param err_code Pointer to an error code variable to set in case of error.
- * @return The converted integer value, or INT_MIN in case of error.
- */
 static size_t	get_number(const char *arg, t_err *err_code)
 {
 	long int	num;
@@ -90,12 +107,6 @@ static size_t	get_number(const char *arg, t_err *err_code)
 	return (num);
 }
 
-/**
- * @brief Checks if a string represents a valid number.
- * 
- * @param arg The string to check.
- * @return 1 if the string is a valid number, 0 otherwise.
- */
 static short int	is_number(const char *arg)
 {
 	size_t	i;
@@ -115,12 +126,6 @@ static short int	is_number(const char *arg)
 	return (1);
 }
 
-/**
- * @brief Converts a string to a long integer.
- * 
- * @param str The string to convert.
- * @return The converted long integer value.
- */
 static long int	ft_atol(const char *str)
 {
 	short int		is_negative;
