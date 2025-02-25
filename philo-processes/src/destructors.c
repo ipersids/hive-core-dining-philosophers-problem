@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:54:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 21:39:03 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 22:21:01 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ static const char	*get_error_message(int exit_code);
 
 void	philo_exit_destroy(int exit_code, t_philo *philo)
 {
+	if (philo->processes)
+	{
+		philo_kill(philo);
+		free(philo->processes);
+	}
 	if (SEM_FAILED != philo->sem_lock)
 	{
 		sem_unlink(SEM_LOCK_NAME);
@@ -36,10 +41,10 @@ void	philo_exit_destroy(int exit_code, t_philo *philo)
 		sem_unlink(SEM_FORK_NAME);
 		sem_close(philo->sem_fork);
 	}
-	if (philo->processes)
+	if (SEM_FAILED != philo->sem_error)
 	{
-		philo_kill(philo);
-		free(philo->processes);
+		sem_unlink(SEM_ERROR_NAME);
+		sem_close(philo->sem_error);
 	}
 	philo_exit(exit_code);
 }
