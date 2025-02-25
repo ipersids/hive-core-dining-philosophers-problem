@@ -6,16 +6,14 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:04:08 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/24 15:46:29 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/25 02:47:11 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note small things to do
- * 1) Implement custom trylock to check status before grab a real fork
- * 2) Add meals counter
- * 3) After step 1: Check the 1 and 2 philosopher problems
- * 4) Double check data race protection and 
+ * 1) Improve synchronisation to stabilize odd-cases output
+ * 2) Double check data race protection
  */
 
 #ifndef PHILOSOPHERS_H
@@ -67,6 +65,17 @@ typedef enum e_time_type
 	TIME_SEC
 }	t_time_type;
 
+# ifndef TRUE
+#  define TRUE 1
+# endif
+
+# ifndef FALSE
+#  define FALSE 0
+# endif
+
+# define IS_BUSY 1
+# define IS_FREE 0
+
 /* ---------------------------- Data Structures ---------------------------- */
 
 typedef struct s_time_to
@@ -82,9 +91,11 @@ typedef struct s_time_to
 typedef struct s_philo
 {
 	t_time_to		info;
-	pthread_mutex_t	mut_status;
-	pthread_mutex_t	mut_print;
-	pthread_mutex_t	*mut_thread;
+	pthread_mutex_t	status_lock;
+	pthread_mutex_t	print_lock;
+	pthread_mutex_t	try_lock;
+	pthread_mutex_t	*thread_lock;
+	short int		*thread_bool;
 	pthread_t		*thread;
 	t_status		status;
 	t_err			err_code;

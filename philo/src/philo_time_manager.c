@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 12:57:45 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/24 15:33:03 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:25:41 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int64_t	philo_get_time(t_time_type type, t_philo *philo)
 
 	if (0 != gettimeofday(&start, NULL))
 	{
-		pthread_mutex_lock(&philo->mut_print);
+		pthread_mutex_lock(&philo->status_lock);
 		philo->status = STATUS_EXIT;
 		philo->err_code = ERROR_GETTIMEOFDAY;
-		pthread_mutex_unlock(&philo->mut_print);
+		pthread_mutex_unlock(&philo->status_lock);
 		return (-42);
 	}
 	if (TIME_USEC == type)
