@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:31:04 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/26 02:35:27 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:03:31 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ typedef struct s_time_to
 {
 	unsigned int	forks;
 	unsigned int	meals;
-	int64_t			die_ms;
-	int64_t			eat_ms;
-	int64_t			sleep_ms;
+	long long			die_ms;
+	long long			eat_ms;
+	long long			sleep_ms;
 }	t_time_to;
 
 typedef struct s_philo
@@ -101,8 +101,8 @@ typedef struct s_philo
 	sem_t			*sem_error;
 	sem_t			*sem_fork;
 	pid_t			*processes;
-	int64_t			start_ms;
-	int64_t			last_meal_ms;
+	long long			start_ms;
+	long long			last_meal_ms;
 	short int		status;
 	unsigned int	meals_eaten;
 }					t_philo;
@@ -150,8 +150,8 @@ void	philo_wait_everyone(t_philo *philo);
 
 /* ------------------------ src/simulation_utils.c -------------------------- */
 
-int64_t	philo_get_time(t_time_type type, t_philo *philo);
-void	philo_usleep(int64_t sleep_microsec, t_philo *philo);
+long long	philo_get_time(t_time_type type, t_philo *philo);
+void	philo_usleep(long long sleep_microsec, t_philo *philo);
 int		philo_is_alive_check(t_philo *philo);
 void	philo_print_message(t_msg_type type, t_philo *philo);
 
