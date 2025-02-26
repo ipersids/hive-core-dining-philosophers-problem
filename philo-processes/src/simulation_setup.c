@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:09:08 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/26 01:04:59 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 02:35:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	philo_start_dinner(t_philo *philo)
 	sem_post(philo->sem_lock);
 	philo->start_ms = philo_get_time(TIME_MSEC, philo);
 	philo->last_meal_ms = philo_get_time(TIME_MSEC, philo);
+	philo_monitoring_init(philo);
 	i = 0;
 	while (STATUS_EXIT != philo->status)
 	{
