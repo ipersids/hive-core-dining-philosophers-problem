@@ -6,16 +6,16 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:03:14 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/26 02:10:07 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:04:22 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sophist.h"
 
-int64_t	philo_get_time(t_time_type type, t_philo *philo)
+long long	philo_get_time(t_time_type type, t_philo *philo)
 {
 	struct timeval	start;
-	int64_t			timer;
+	long long			timer;
 
 	if (0 != gettimeofday(&start, NULL))
 	{
@@ -32,10 +32,10 @@ int64_t	philo_get_time(t_time_type type, t_philo *philo)
 	return (timer);
 }
 
-void	philo_usleep(int64_t sleep_microsec, t_philo *philo)
+void	philo_usleep(long long sleep_microsec, t_philo *philo)
 {
-	int64_t	start;
-	int64_t	elapsed;
+	long long	start;
+	long long	elapsed;
 
 	start = philo_get_time(TIME_USEC, philo);
 	elapsed = philo_get_time(TIME_USEC, philo) - start;
@@ -50,7 +50,7 @@ void	philo_usleep(int64_t sleep_microsec, t_philo *philo)
 
 int	philo_is_alive_check(t_philo *philo)
 {
-	int64_t	diff;
+	long long	diff;
 
 	diff = philo_get_time(TIME_MSEC, philo) - philo->last_meal_ms;
 	if (diff >= philo->info.die_ms)
@@ -60,18 +60,18 @@ int	philo_is_alive_check(t_philo *philo)
 
 void	philo_print_message(t_msg_type type, t_philo *philo)
 {
-	int64_t	diff;
+	long long	diff;
 
 	sem_wait(philo->sem_lock);
 	diff = philo_get_time(TIME_MSEC, philo) - philo->start_ms;
 	if (MSG_THINK == type)
-		printf("%llu %u is thinking\n", diff, philo->indx);
+		printf("%lld %u is thinking\n", diff, philo->indx);
 	else if (MSG_SLEEP == type)
-		printf("%llu %u is sleeping\n", diff, philo->indx);
+		printf("%lld %u is sleeping\n", diff, philo->indx);
 	else if (MSG_EAT == type)
-		printf("%llu %u is eating\n", diff, philo->indx);
+		printf("%lld %u is eating\n", diff, philo->indx);
 	else if (MSG_FORK == type)
-		printf("%llu %u has taken a fork\n", diff, philo->indx);
+		printf("%lld %u has taken a fork\n", diff, philo->indx);
 	else if (MSG_DEAD == type)
 	{
 		printf("%lld %u died\n", diff, philo->indx);
