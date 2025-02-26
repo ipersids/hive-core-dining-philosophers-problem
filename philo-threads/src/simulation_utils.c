@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 12:57:45 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 15:36:49 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:59:53 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 /* --------------------------- Public Functions ---------------------------- */
 
-int64_t	philo_get_time(t_time_type type, t_philo *philo)
+long long	philo_get_time(t_time_type type, t_philo *philo)
 {
 	struct timeval	start;
-	int64_t			timer;
+	long long			timer;
 
 	if (0 != gettimeofday(&start, NULL))
 	{
@@ -36,10 +36,10 @@ int64_t	philo_get_time(t_time_type type, t_philo *philo)
 	return (timer);
 }
 
-void	philo_usleep(int64_t sleep_microsec, t_philo *philo, t_whoami *whoami)
+void	philo_usleep(long long sleep_microsec, t_philo *philo, t_whoami *whoami)
 {
-	int64_t	start;
-	int64_t	elapsed;
+	long long	start;
+	long long	elapsed;
 
 	start = philo_get_time(TIME_USEC, philo);
 	elapsed = philo_get_time(TIME_USEC, philo) - start;
@@ -64,7 +64,7 @@ int	philo_status_check(t_philo *philo)
 
 int	philo_is_alive_check(t_whoami *whoami, t_philo *philo)
 {
-	int64_t	current_ms;
+	long long	current_ms;
 
 	if (!philo_status_check(philo))
 		return (0);
@@ -87,12 +87,12 @@ void	philo_print_message(t_msg_type type, t_philo *philo, t_whoami *whoami)
 	pthread_mutex_lock(&philo->print_lock);
 	whoami->elapsed_ms = philo_get_time(TIME_MSEC, philo) - philo->start_ms;
 	if (MSG_SLEEP == type && philo_status_check(philo))
-		printf("%llu %zu is sleeping\n", whoami->elapsed_ms, whoami->i);
+		printf("%lld %zu is sleeping\n", whoami->elapsed_ms, whoami->i);
 	else if (MSG_THINK == type && philo_status_check(philo))
-		printf("%llu %zu is thinking\n", whoami->elapsed_ms, whoami->i);
+		printf("%lld %zu is thinking\n", whoami->elapsed_ms, whoami->i);
 	else if (MSG_EAT == type && philo_status_check(philo))
-		printf("%llu %zu is eating\n", whoami->elapsed_ms, whoami->i);
+		printf("%lld %zu is eating\n", whoami->elapsed_ms, whoami->i);
 	else if (MSG_FORK == type && philo_status_check(philo))
-		printf("%llu %zu has taken a fork\n", whoami->elapsed_ms, whoami->i);
+		printf("%lld %zu has taken a fork\n", whoami->elapsed_ms, whoami->i);
 	pthread_mutex_unlock(&philo->print_lock);
 }

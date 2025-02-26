@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:52:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 15:09:39 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:59:11 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	philo_pthread_detach(pthread_t *thread, int tread_amount)
 	int	i;
 
 	i = 0;
-	while (i < tread_amount && thread[i] != NULL)
+	while (i < tread_amount && thread[i] != 0)
 	{
 		if (pthread_detach(thread[i]) != 0)
 			write(STDERR_FILENO, "pthread_detach fails.\n", 23);

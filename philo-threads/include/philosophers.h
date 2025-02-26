@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:04:08 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 15:45:08 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:00:12 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ typedef struct s_time_to
 	size_t	forks;
 	size_t	meals;
 	size_t	indx;
-	int64_t	die_ms;
-	int64_t	eat_ms;
-	int64_t	sleep_ms;
+	long long	die_ms;
+	long long	eat_ms;
+	long long	sleep_ms;
 }	t_time_to;
 
 typedef struct s_philo
@@ -94,7 +94,7 @@ typedef struct s_philo
 	pthread_t		*thread;
 	t_status		status;
 	t_err			err_code;
-	int64_t			start_ms;
+	long long			start_ms;
 }					t_philo;
 
 typedef struct s_whoami
@@ -103,8 +103,8 @@ typedef struct s_whoami
 	size_t	left_i;
 	size_t	right_i;
 	size_t	meals_cnt;
-	int64_t	last_eat_ms;
-	int64_t	elapsed_ms;
+	long long	last_eat_ms;
+	long long	elapsed_ms;
 }			t_whoami;
 
 /* ----------------------- philo/src/destructors.c -------------------------- */
@@ -242,7 +242,7 @@ int		philo_routine_go_sleep(t_philo *philo, t_whoami *whoami);
  * @param philo Pointer to the philosopher structure.
  * @return The current time in the specified format, or -42 on error.
  */
-int64_t	philo_get_time(t_time_type type, t_philo *philo);
+long long	philo_get_time(t_time_type type, t_philo *philo);
 
 /**
  * @brief Sleeps for the specified amount of time in microseconds.
@@ -254,7 +254,7 @@ int64_t	philo_get_time(t_time_type type, t_philo *philo);
  * @param philo Pointer to the philosopher structure.
  * @param whoami Pointer to the whoami structure.
  */
-void	philo_usleep(int64_t sleep_microsec, t_philo *philo, t_whoami *whoami);
+void	philo_usleep(long long sleep_microsec, t_philo *philo, t_whoami *whoami);
 
 /**
  * @brief Prints a message indicating the philosopher's action.
