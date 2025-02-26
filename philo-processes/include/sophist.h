@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:31:04 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/26 01:06:46 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 02:35:27 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 # include <sys/time.h>	// gettimeofday()
 # include <string.h>	// memset()
 # include <fcntl.h>		// For O_* constants in sem_open()
-// # include <sys/stat.h>	// For mode constants in sem_open()
 # include <semaphore.h> // sem_open, sem_close, sem_post, sem_wait, sem_unlink
 # include <signal.h>    // kill()
 # include <sys/wait.h>	// waitpid() dependencies
 # include <errno.h>		// for waitpid()
+# include <pthread.h>	// pthread_*()
 
 /* ------------------------------- Constants -------------------------------- */
 
@@ -160,5 +160,6 @@ void	philo_print_message(t_msg_type type, t_philo *philo);
 void	philo_think(t_philo *philo);
 void	philo_eat(t_philo *philo);
 void	philo_sleep(t_philo *philo);
+void	philo_monitoring_init(t_philo *philo);
 
 #endif

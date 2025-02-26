@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:03:14 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/26 01:06:30 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/26 02:10:07 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,6 @@ void	philo_print_message(t_msg_type type, t_philo *philo)
 
 	sem_wait(philo->sem_lock);
 	diff = philo_get_time(TIME_MSEC, philo) - philo->start_ms;
-	if (MSG_DEAD == type || FALSE == philo_is_alive_check(philo))
-	{
-		printf("%lld %u died\n", diff, philo->indx);
-		exit(ERROR_PHILO_DEAD);
-	}
 	if (MSG_THINK == type)
 		printf("%llu %u is thinking\n", diff, philo->indx);
 	else if (MSG_SLEEP == type)
@@ -77,5 +72,10 @@ void	philo_print_message(t_msg_type type, t_philo *philo)
 		printf("%llu %u is eating\n", diff, philo->indx);
 	else if (MSG_FORK == type)
 		printf("%llu %u has taken a fork\n", diff, philo->indx);
+	else if (MSG_DEAD == type)
+	{
+		printf("%lld %u died\n", diff, philo->indx);
+		exit(ERROR_PHILO_DEAD);
+	}
 	sem_post(philo->sem_lock);
 }
