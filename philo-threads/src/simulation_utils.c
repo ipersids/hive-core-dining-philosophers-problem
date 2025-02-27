@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 12:57:45 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/27 01:28:34 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:48:14 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,21 @@ int	philo_print(t_msg_type type, t_philo *philo, t_whoami *whoami)
 	}
 	pthread_mutex_unlock(&philo->print_lock);
 	return (EXIT_SUCCESS);
+}
+
+void	philo_usleep(long long msec, t_philo *philo)
+{
+	long long	usec;
+	long long	start;
+	long long	elapsed;
+
+	start = philo_get_time(TIME_USEC, philo);
+	usleep((msec - 10) * 1000);
+	usec = msec * 1000;
+	elapsed = philo_get_time(TIME_USEC, philo) - start;
+	while (usec >= elapsed)
+	{
+		usleep(500);
+		elapsed = philo_get_time(TIME_USEC, philo) - start;
+	}
 }

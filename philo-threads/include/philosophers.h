@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:04:08 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/27 02:19:29 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:44:20 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,5 +272,7 @@ int			philo_is_exit_check(t_philo *philo);
  * @return The current time in the specified format, or -42 on error.
  */
 long long	philo_get_time(t_time_type type, t_philo *philo);
+
+void	philo_usleep(long long msec, t_philo *philo);
 
 #endif

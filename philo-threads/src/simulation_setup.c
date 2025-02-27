@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:54:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/27 02:07:26 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:29:11 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void	philo_pthread_create(t_philo *philo)
 	if (!philo->thread)
 		philo_destroy(ERROR_MALLOC, philo);
 	memset(philo->thread, 0, (philo->info.forks + 1) * sizeof(pthread_t));
-	pthread_mutex_lock(&philo->status_lock);
+	pthread_mutex_lock(&philo->time_lock);
 	thread_init(philo);
 	philo->start_ms = philo_get_time(TIME_MSEC, philo);
 	philo->status = STATUS_START;
-	pthread_mutex_unlock(&philo->status_lock);
+	pthread_mutex_unlock(&philo->time_lock);
 	philo_pthread_detach(philo->thread, philo->info.forks, philo);
 	if (0 != pthread_join(philo->thread[philo->info.forks], NULL))
 		philo_destroy(ERROR_PTHREAD, philo);
