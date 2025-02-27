@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 23:49:30 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/27 02:19:21 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:37:37 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	*philo_routine_monitoring(void *arg)
 	long long	diff;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->status_lock);
 	diff = 0;
-	pthread_mutex_unlock(&philo->status_lock);
+	pthread_mutex_lock(&philo->time_lock);
+	pthread_mutex_unlock(&philo->time_lock);
 	usleep(1000);
 	while (!philo_is_exit_check(philo))
 	{
@@ -58,16 +58,21 @@ void	*philo_routine_monitoring(void *arg)
 
 static int	is_dead(t_philo *philo, long long diff, size_t i)
 {
+	size_t	index;
+
 	if (diff >= philo->info.die_ms && !philo_is_exit_check(philo))
 	{
 		pthread_mutex_lock(&philo->status_lock);
 		philo->status = STATUS_EXIT;
+		index = philo->info.indx;
 		pthread_mutex_unlock(&philo->status_lock);
-		pthread_mutex_lock(&philo->print_lock);
-		diff = philo_get_time(TIME_MSEC, philo) - philo->start_ms;
-		if (!(philo->info.meals > 0 && philo->info.indx == 0))
+		if (!(philo->info.meals > 0 && 0 == index))
+		{
+			pthread_mutex_lock(&philo->print_lock);
+			diff = philo_get_time(TIME_MSEC, philo) - philo->start_ms;
 			printf("%lld %zu died\n", diff, i + 1);
-		pthread_mutex_unlock(&philo->print_lock);
+			pthread_mutex_unlock(&philo->print_lock);
+		}
 		return (TRUE);
 	}
 	return (FALSE);
