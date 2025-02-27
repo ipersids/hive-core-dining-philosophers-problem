@@ -25,7 +25,8 @@ SRCS			:=	$(SRC_DIR)/argv_check.c \
 					$(SRC_DIR)/simulation_actions.c \
 					$(SRC_DIR)/simulation_setup.c \
 					$(SRC_DIR)/simulation_start.c \
-					$(SRC_DIR)/simulation_utils.c
+					$(SRC_DIR)/simulation_utils.c \
+					$(SRC_DIR)/monitoring.c
 
 SRC_MAIN		:= main.c
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -54,4 +55,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+debug: CFLAGS += -fsanitize=address -g
+debug: re
+
+.PHONY: all clean fclean re debug

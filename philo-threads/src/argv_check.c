@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 17:15:54 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/25 15:19:18 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/27 01:09:41 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void	philo_struct_init(t_philo *philo)
 	memset(&philo->info, 0, sizeof(t_time_to));
 	memset(&philo->status_lock, 0, sizeof(pthread_mutex_t));
 	memset(&philo->print_lock, 0, sizeof(pthread_mutex_t));
-	memset(&philo->try_lock, 0, sizeof(pthread_mutex_t));
+	memset(&philo->time_lock, 0, sizeof(pthread_mutex_t));
 	philo->thread_lock = NULL;
-	philo->thread = NULL;
-	philo->thread_bool = NULL;
-	philo->status = STATUS_WAIT;
-	philo->err_code = NO_ERROR;
+	philo->last_eat_ms = NULL;
 	philo->start_ms = 0;
+	philo->thread = NULL;
+	philo->status = STATUS_WAIT;
+	philo->err_code = 0;
 }
 
 void	philo_argv_check(const int argc, char **argv, t_philo *philo)
@@ -66,13 +66,13 @@ void	philo_argv_check(const int argc, char **argv, t_philo *philo)
 	philo->info.forks = get_number(argv[1], &err);
 	if (NO_ERROR != err)
 		philo_exit(err);
-	philo->info.die_ms = (int64_t)get_number(argv[2], &err);
+	philo->info.die_ms = get_number(argv[2], &err);
 	if (NO_ERROR != err)
 		philo_exit(err);
-	philo->info.eat_ms = (int64_t)get_number(argv[3], &err);
+	philo->info.eat_ms = get_number(argv[3], &err);
 	if (NO_ERROR != err)
 		philo_exit(err);
-	philo->info.sleep_ms = (int64_t)get_number(argv[4], &err);
+	philo->info.sleep_ms = get_number(argv[4], &err);
 	if (NO_ERROR != err)
 		philo_exit(err);
 	if (6 == argc)
@@ -151,6 +151,6 @@ static long int	ft_atol(const char *str)
 		res += (*str - '0');
 		str++;
 	}
-	res = (long int)(res * is_negative);
+	res = res * is_negative;
 	return (res);
 }
