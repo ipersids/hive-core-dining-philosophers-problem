@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/25 16:04:25 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/26 00:11:19 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/26 23:38:38 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME			:= philo_bonus
 
 # Compilation variables
 CC				:= clang
-CFLAGS			:= -Wall -Wextra -Werror
+CFLAGS			:= -Wall -Wextra -Werror -pthread
 HDRS			:= -Iinclude
 
 # Directories
@@ -68,4 +68,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+debug: CFLAGS += -fsanitize=address -g
+debug: all
+
+.PHONY: all clean fclean re debug
