@@ -6,13 +6,17 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 08:24:16 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/06 13:29:23 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:04:56 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static void	end_monitoring(int exit_code, t_monitor *monitor);
+
+/* --------------------------- Public Functions ---------------------------- */
 
 void	ph_init_semaphores(t_philo *philo)
 {
@@ -90,6 +94,8 @@ void	ph_wait_processes(t_philo *philo, t_monitor *monitor)
 	}
 	end_monitoring(exit_code, monitor);
 }
+
+/* ------------------- Private Function Implementation --------------------- */
 
 static void	end_monitoring(int exit_code, t_monitor *monitor)
 {

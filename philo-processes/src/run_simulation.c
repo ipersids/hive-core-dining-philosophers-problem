@@ -6,16 +6,20 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 09:42:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/06 16:00:20 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:06:48 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static void	eat_sleep_think(t_philo *philo);
 static void	monitoring_thread_init(t_philo *philo);
-static void monitoring_thread_join(t_philo *philo);
+static void	monitoring_thread_join(t_philo *philo);
 static void	*monitoring_routine(void *arg);
+
+/* --------------------------- Public Functions ---------------------------- */
 
 void	ph_run_simulation(t_philo *philo)
 {
@@ -45,6 +49,8 @@ void	ph_run_simulation(t_philo *philo)
 	monitoring_thread_join(philo);
 	ph_child_destroy_and_exit(ERROR_TIMEOUT, philo);
 }
+
+/* ------------------- Private Function Implementation --------------------- */
 
 static void	eat_sleep_think(t_philo *philo)
 {
@@ -79,7 +85,7 @@ static void	monitoring_thread_init(t_philo *philo)
 	}
 }
 
-static void monitoring_thread_join(t_philo *philo)
+static void	monitoring_thread_join(t_philo *philo)
 {
 	if (0 != pthread_join(philo->monitor, NULL))
 	{

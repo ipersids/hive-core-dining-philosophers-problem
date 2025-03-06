@@ -6,13 +6,17 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:51:48 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/05 14:40:16 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:04:29 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static void	*meals_counter(void *arg);
+
+/* --------------------------- Public Functions ---------------------------- */
 
 void	ph_init_meals_monitoring(t_monitor *monitor, t_philo *philo)
 {
@@ -36,6 +40,8 @@ void	ph_join_monitoring_thread(t_monitor *monitor, t_philo *philo)
 		ph_destroy_and_exit(EXIT_FAILURE, philo);
 	}
 }
+
+/* ------------------- Private Function Implementation --------------------- */
 
 static void	*meals_counter(void *arg)
 {
