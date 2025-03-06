@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 08:24:16 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/05 15:16:03 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 13:29:23 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ void	ph_init_semaphores(t_philo *philo)
 	sem_unlink(SEM_TIME_NAME);
 	sem_unlink(SEM_FORK_NAME);
 	sem_unlink(SEM_MEALS_NAME);
-	philo->print_lock = sem_open(SEM_PRINT_NAME, O_CREAT | O_EXEC, SEM_MODE, 1);
+	philo->print_lock = sem_open(SEM_PRINT_NAME, O_CREAT | O_EXCL, SEM_MODE, 1);
 	if (SEM_FAILED == philo->print_lock)
 		ph_destroy_and_exit(ERROR_SEMAPHORE, philo);
-	philo->time_lock = sem_open(SEM_TIME_NAME, O_CREAT | O_EXEC, SEM_MODE, 1);
+	philo->time_lock = sem_open(SEM_TIME_NAME, O_CREAT | O_EXCL, SEM_MODE, 1);
 	if (SEM_FAILED == philo->time_lock)
 		ph_destroy_and_exit(ERROR_SEMAPHORE, philo);
-	philo->fork_lock = sem_open(SEM_FORK_NAME, O_CREAT | O_EXEC, SEM_MODE, n);
+	philo->fork_lock = sem_open(SEM_FORK_NAME, O_CREAT | O_EXCL, SEM_MODE, n);
 	if (SEM_FAILED == philo->fork_lock)
 		ph_destroy_and_exit(ERROR_SEMAPHORE, philo);
-	philo->meals_lock = sem_open(SEM_MEALS_NAME, O_CREAT | O_EXEC, SEM_MODE, 0);
+	philo->meals_lock = sem_open(SEM_MEALS_NAME, O_CREAT | O_EXCL, SEM_MODE, 0);
 	if (SEM_FAILED == philo->meals_lock)
 		ph_destroy_and_exit(ERROR_SEMAPHORE, philo);
 }
@@ -98,6 +98,13 @@ static void	end_monitoring(int exit_code, t_monitor *monitor)
 	i = 0;
 	if (ERROR_PHILO_DEAD == exit_code)
 		monitor->is_all_survive = false;
+	if (ERROR_TIMEOUT == exit_code)
+	{
+		monitor->is_all_survive = false;
+		sem_wait(monitor->philo->print_lock);
+		write(STDERR_FILENO, "Error: child process: ", 23);
+		write(STDERR_FILENO, "timeout\n", 9);
+	}
 	while (i < monitor->info->forks)
 	{
 		sem_post(monitor->philo->meals_lock);

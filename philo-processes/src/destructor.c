@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 08:38:28 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/05 14:45:12 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 13:30:45 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,21 @@ void	ph_kill(t_philo *philo)
 		forks[i] = 0;
 		i++;
 	}
+}
+
+void	ph_child_destroy_and_exit(int exit_code, t_philo *philo)
+{
+	if (0 != philo->print_lock && SEM_FAILED != philo->print_lock)
+		sem_close(philo->print_lock);
+	if (0 != philo->time_lock && SEM_FAILED != philo->time_lock)
+		sem_close(philo->time_lock);
+	if (0 != philo->fork_lock && SEM_FAILED != philo->fork_lock)
+		sem_close(philo->fork_lock);
+	if (0 != philo->meals_lock && SEM_FAILED != philo->meals_lock)
+		sem_close(philo->meals_lock);
+	if (philo->processes)
+		free(philo->processes);
+	ph_exit(exit_code);
 }
 
 /* ------------------- Private Function Implementation --------------------- */
