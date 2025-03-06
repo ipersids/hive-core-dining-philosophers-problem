@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 09:42:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/05 15:14:21 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:00:20 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	eat_sleep_think(t_philo *philo);
 static void	monitoring_thread_init(t_philo *philo);
+static void monitoring_thread_join(t_philo *philo);
 static void	*monitoring_routine(void *arg);
 
 void	ph_run_simulation(t_philo *philo)
@@ -41,7 +42,8 @@ void	ph_run_simulation(t_philo *philo)
 		if (philo->info->meals > 0 && philo->info->meals == ++philo->meals_done)
 			sem_post(philo->meals_lock);
 	}
-	exit(ERROR_TIMEOUT);
+	monitoring_thread_join(philo);
+	ph_child_destroy_and_exit(ERROR_TIMEOUT, philo);
 }
 
 static void	eat_sleep_think(t_philo *philo)
@@ -68,25 +70,35 @@ static void	eat_sleep_think(t_philo *philo)
 
 static void	monitoring_thread_init(t_philo *philo)
 {
-	pthread_t	monitor;
-
-	if (0 != pthread_create(&monitor, NULL, monitoring_routine, philo))
+	if (0 != pthread_create(&philo->monitor, NULL, monitoring_routine, philo))
 	{
 		sem_wait(philo->print_lock);
 		write(STDERR_FILENO, "Error: child process: ", 23);
 		write(STDERR_FILENO, "pthread_create fails\n", 22);
-		exit(ERROR_PHILO_DEAD);
+		ph_child_destroy_and_exit(ERROR_PHILO_DEAD, philo);
 	}
-	pthread_detach(monitor);
+}
+
+static void monitoring_thread_join(t_philo *philo)
+{
+	if (0 != pthread_join(philo->monitor, NULL))
+	{
+		sem_wait(philo->print_lock);
+		write(STDERR_FILENO, "Error: child process: ", 23);
+		write(STDERR_FILENO, "pthread_join fails\n", 20);
+		ph_child_destroy_and_exit(ERROR_PHILO_DEAD, philo);
+	}
 }
 
 static void	*monitoring_routine(void *arg)
 {
 	t_philo		*philo;
 	long long	diff;
+	long long	timeout;
 
 	philo = (t_philo *)arg;
-	while (true)
+	timeout = philo->info->start_ms + TIMEOUT_ONE_HOUR;
+	while (ph_get_time(TIME_MSEC) < timeout)
 	{
 		sem_wait(philo->time_lock);
 		diff = ph_get_time(TIME_MSEC) - philo->last_meal_ms;
@@ -94,7 +106,7 @@ static void	*monitoring_routine(void *arg)
 		if (diff >= philo->info->die_ms)
 		{
 			ph_print_message(MSG_DEAD, philo);
-			exit(ERROR_PHILO_DEAD);
+			ph_child_destroy_and_exit(ERROR_PHILO_DEAD, philo);
 		}
 		else if (diff >= philo->info->die_ms / 2)
 			usleep(philo->info->die_ms / 2 * 1000);

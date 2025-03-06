@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 00:28:29 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/06 13:31:56 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:59:02 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_philo
 	bool		delay_first_meal;
 	int			meals_done;
 	pid_t		*processes;
+	pthread_t	monitor;
 }				t_philo;
 
 typedef struct s_monitor
@@ -112,6 +113,7 @@ void		ph_join_monitoring_thread(t_monitor *monitor, t_philo *philo);
 
 void		ph_exit(int exit_code);
 void		ph_destroy_and_exit(int exit_code, t_philo *philo);
+void		ph_child_destroy_and_exit(int exit_code, t_philo *philo);
 void		ph_kill(t_philo *philo);
 
 void		ph_run_simulation(t_philo *philo);

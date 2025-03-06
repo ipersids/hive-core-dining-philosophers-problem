@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 08:38:28 by ipersids          #+#    #+#             */
-/*   Updated: 2025/03/06 13:30:45 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:36:55 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ph_child_destroy_and_exit(int exit_code, t_philo *philo)
 		sem_close(philo->meals_lock);
 	if (philo->processes)
 		free(philo->processes);
-	ph_exit(exit_code);
+	exit(exit_code);
 }
 
 /* ------------------- Private Function Implementation --------------------- */
